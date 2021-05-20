@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+        - "80:80"
+    depends_on:
+        - phpfpm
+    volumes:
+        - ./conf.d:/etc/nginx/conf.d
+  phpfpm:
+      image: bitnami/php-fpm:latest
+      ports:
+          - "9000:9000"
+      volumes:
+          - ./code:/code
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
